@@ -1,0 +1,63 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <script type="text/javascript">
+  window.onload = function () {
+  var dps = [];
+
+var obs;
+
+function ParseBOMDateString(ds){
+  var year = ds.substr(0, 4)
+  var month = ds.substr(4, 2)
+  var day = ds.substr(6, 2)
+  var hours = ds.substr(8, 2)
+  var minutes = ds.substr(10, 2)
+  var seconds = ds.substr(12, 2)
+
+  var d = new Date(year, month, day, hours, minutes, seconds);
+  return d;
+}
+
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Coldstream Meteogram"
+      },
+        axisY: {            
+          title: "Temp"
+        },
+        axisX: {            
+          title: "Obs"
+        },
+       data: [
+        {
+          type: "line",
+          dataPoints: dps
+        }
+      ]
+    });
+
+
+    $.getJSON( "coldstream.observations.json", { name: "John", time: "2pm" } )
+      .done(function( json ) {
+        console.log( "JSON Data: " + json.observations.notice[0].copyright );
+        $.each( json.observations.data, function( index, value ){
+            dps.push({x: ParseBOMDateString(value.local_date_time_full), y: value.air_temp});
+        });
+        chart.render();
+      })
+      .fail(function( jqxhr, textStatus, error ) {
+        var err = textStatus + ", " + error;
+        console.log( "Request Failed: " + err );
+    });
+
+  }
+  </script>
+ <script type="text/javascript"  src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+ <script type="text/javascript" src="jquery.canvasjs.min.js"></script></head>
+<body>
+  <div id="chartContainer" style="height: 300px; width: 100%;">
+  </div>
+</body>
+</html>
