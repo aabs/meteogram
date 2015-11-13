@@ -24,11 +24,12 @@ function ParseBOMDateString(ds){
       title:{
         text: "Coldstream Meteogram"
       },
-        axisY: {            
+        axisY: {
           title: "Temp"
         },
-        axisX: {            
-          title: "Obs"
+        axisX: {
+          title: "Time",
+          labelAngle: -60
         },
        data: [
         {
@@ -39,7 +40,7 @@ function ParseBOMDateString(ds){
     });
 
 
-    $.getJSON( "coldstream.observations.json", { name: "John", time: "2pm" } )
+    $.getJSON( "http://cors.io/?u=http://www.bom.gov.au/fwo/IDV60801/IDV60801.94864.json", { name: "John", time: "2pm" } )
       .done(function( json ) {
         console.log( "JSON Data: " + json.observations.notice[0].copyright );
         $.each( json.observations.data, function( index, value ){
@@ -55,7 +56,8 @@ function ParseBOMDateString(ds){
   }
   </script>
  <script type="text/javascript"  src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
- <script type="text/javascript" src="jquery.canvasjs.min.js"></script></head>
+<script src="//canvasjs.com/assets/script/canvasjs.min.js"></script>
+</head>
 <body>
   <div id="chartContainer" style="height: 300px; width: 100%;">
   </div>
